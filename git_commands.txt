@@ -1,0 +1,22 @@
+# init
+git init
+
+# add file or folder to index
+# use '*' for filename and use '.' for sub folders 
+git add <filepath>
+
+# commit
+# -m for message
+git commit -m "message"
+
+#branch
+# -m or -M for rename to new branch name
+git branch -M main
+
+# add remote repostry
+# origin is the name and the URL for repostry address
+git remote add origin https://github.com/hayatoyu/flutter_tutorial.git
+
+# push main to remote origin
+# -u for set upstreams
+git push -u origin main
