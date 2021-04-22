@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cell_calendar/cell_calendar.dart';
+import 'package:works_with_tab/login_page.dart';
 
 
 void main() {
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              Text('Coming Soon 1'),
+              LoginPage(),
               Text('Coming Soon 2'),
               CellCalendar(
                 daysOfTheWeekBuilder: (dayIndex) {
