@@ -1,9 +1,55 @@
+import 'package:cell_calendar/cell_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:works_with_tab/signin.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
+}
+
+class LoggedScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: TabBar(
+              tabs: [
+                Tab(text: 'Profile'),
+                Tab(text: 'Activities'),
+                Tab(text: 'Calendar')
+              ],
+            ),
+            title: Text('Tabs Demo'),
+          ),
+          body: TabBarView(
+            children: [
+              FirstScreen(),
+              Text('Coming Soon 2'),
+              CellCalendar(
+                daysOfTheWeekBuilder: (dayIndex) {
+                  final labels = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 4.0),
+                    child: Text(
+                      labels[dayIndex],
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    )
+                  );
+                },
+              )
+            ],
+          ),
+        ),
+      ),
+      theme: ThemeData(
+        primarySwatch: Colors.blue
+      ),
+    );
+  }
 }
 
 class FirstScreen extends StatelessWidget {
@@ -134,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-              return FirstScreen();
+              return LoggedScreen();
             },
             ),
             );
