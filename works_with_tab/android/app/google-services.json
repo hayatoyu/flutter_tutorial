@@ -1,26 +1,19 @@
 {
   "project_info": {
     "project_number": "679787306757",
+    "firebase_url": "https://works-with-tab-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "works-with-tab",
     "storage_bucket": "works-with-tab.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:679787306757:android:075a6893c549715fa7e16c",
+        "mobilesdk_app_id": "1:679787306757:android:67f3bce50271a451a7e16c",
         "android_client_info": {
           "package_name": "com.example.works_with_tab"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "679787306757-unr28i05uu7jirlaon8k115eeu7b4nmq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.works_with_tab",
-            "certificate_hash": "9d9bd0867c556f85266f06856e90b5b74d8f843a"
-          }
-        },
         {
           "client_id": "679787306757-asalsg3ihn13tnhrf02iq9ul4brkikmm.apps.googleusercontent.com",
           "client_type": 3
@@ -37,6 +30,13 @@
             {
               "client_id": "679787306757-asalsg3ihn13tnhrf02iq9ul4brkikmm.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "679787306757-qu7jkdeqjvldruv46j6ect9t1q5t6gi0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.workswithtab"
+              }
             }
           ]
         }
