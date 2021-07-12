@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'myHomePage.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -26,7 +27,10 @@ class _BodyState extends State<Body> {
 
   void click() {
     this.name = controller.text;
-
+    Navigator.push(
+      context, 
+      MaterialPageRoute(builder: (context) => MyHomePage(this.name))
+      );
   }
 
   @override
