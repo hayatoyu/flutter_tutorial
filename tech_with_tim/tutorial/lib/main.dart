@@ -1,6 +1,7 @@
 //import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:tutorial/login.dart';
 import 'myHomePage.dart';
 
 void main() {
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.orange,
         visualDensity: VisualDensity.adaptivePlatformDensity
       ),
-      home: MyHomePage(),
+      home: LoginPage(),
     );
   }
 }
