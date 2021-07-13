@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "217297445688",
+    "project_id": "tech-with-tim-97360",
+    "storage_bucket": "tech-with-tim-97360.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217297445688:android:e2d648dab70bfac2c9d7cd",
+        "android_client_info": {
+          "package_name": "com.example.tutorial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "217297445688-vvssui50rbpo1isiktnulrl84kt45n0a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tutorial",
+            "certificate_hash": "dabed387607eb003c3fb18d19d373c9ba7be89be"
+          }
+        },
+        {
+          "client_id": "217297445688-a1o8fprcju1s9dbm288i1oqj5avttdbi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoLntrbeKJtZX4p49X7rIMzSevDKLB_7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "217297445688-a1o8fprcju1s9dbm288i1oqj5avttdbi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
