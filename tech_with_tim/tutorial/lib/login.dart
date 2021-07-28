@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'myHomePage.dart';
+import 'auth.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -22,37 +24,31 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  String name = "";
-  TextEditingController controller = new TextEditingController();
+  User? user = null;
 
   void click() {
-    this.name = controller.text;
-    Navigator.push(
-      context, 
-      MaterialPageRoute(builder: (context) => MyHomePage(this.name))
-      );
+    signInWithGoogle().then((user) => {
+      this.user = user,
+      Navigator.push(
+        context, 
+        MaterialPageRoute(builder: (context) => MyHomePage(user.displayName!))
+      )
+    });
+    
+  }
+
+  Widget googleLoginButton() {
+    return OutlinedButton(
+      onPressed: this.click, 
+      style: ShapeBorder,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.center,
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: TextField(
-          controller: controller,
-          decoration: InputDecoration(
-              prefixIcon: Icon(Icons.person),
-              labelText: "Type Your Name :",
-              border: OutlineInputBorder(borderSide: BorderSide(width: 5,color: Colors.black)),
-              suffixIcon: IconButton(
-                icon: Icon(Icons.done),
-                splashColor: Colors.blue,
-                tooltip: "Submit",
-                onPressed: this.click,
-              )),
-        ),
-      ),
+      child: 
     );
   }
 }
