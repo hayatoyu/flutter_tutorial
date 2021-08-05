@@ -20,7 +20,7 @@ Future<User> signInWithGoogle() async {
   final User? user = userCredential.user;
 
   assert(!(user!).isAnonymous);
-  assert(await user!.getIdToken() != null);
+  //assert(await user!.getIdToken() != null);
 
   final User currentUser = await _auth.currentUser!;
   assert(currentUser.uid == user!.uid);

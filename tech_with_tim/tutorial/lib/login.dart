@@ -40,7 +40,35 @@ class _BodyState extends State<Body> {
   Widget googleLoginButton() {
     return OutlinedButton(
       onPressed: this.click, 
-      style: ShapeBorder,
+      style: OutlinedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(45),
+          side: BorderSide(color: Colors.grey),
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(
+              image: AssetImage('assets/google_logo.jpg'),
+              height: 35,
+              ),
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                'Sign in with Google',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 25,
+                  ),
+                ),
+              )
+          ],
+        ),
+      ),
     );
   }
 
@@ -48,7 +76,7 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.center,
-      child: 
+      child: googleLoginButton()
     );
   }
 }

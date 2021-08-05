@@ -1,0 +1,60 @@
+{
+    // 使用 IntelliSense 以得知可用的屬性。
+    // 暫留以檢視現有屬性的描述。
+    // 如需詳細資訊，請瀏覽: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "hello_http",
+            "cwd": "hello_http",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "hello_http (profile mode)",
+            "cwd": "hello_http",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "hello_theme",
+            "cwd": "hello_theme",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "hello_theme (profile mode)",
+            "cwd": "hello_theme",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "works_with_tab",
+            "cwd": "works_with_tab",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "works_with_tab (profile mode)",
+            "cwd": "works_with_tab",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "tutorial",
+            "cwd": "tech_with_tim\\tutorial",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "tutorial (profile mode)",
+            "cwd": "tech_with_tim\\tutorial",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        }
+    ]
+}
