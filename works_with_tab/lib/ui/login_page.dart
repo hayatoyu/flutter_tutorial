@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
               color: Theme.of(context).colorScheme.primary,
               width: 1,
             );
-          return null; // Defer to the widget's default.
+          return BorderSide(); // Defer to the widget's default.
         },
       )
     );
