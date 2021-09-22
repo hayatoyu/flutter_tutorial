@@ -67,47 +67,63 @@ class FirstScreen extends StatelessWidget {
         ),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               CircleAvatar(
                 backgroundImage: NetworkImage(
                   imageUrl,
                 ),
-                radius: 60,
+                radius: 30,
                 backgroundColor: Colors.transparent,
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 20),
               Text(
                 'NAME',
                 style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 10,
                     fontWeight: FontWeight.bold,
                     color: Colors.black54),
               ),
               Text(
                 name,
                 style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 14,
                     color: Colors.deepPurple,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               Text(
                 'EMAIL',
                 style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 10,
                     fontWeight: FontWeight.bold,
                     color: Colors.black54),
               ),
               Text(
                 email,
                 style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 14,
                     color: Colors.deepPurple,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 20),
+              Text('Like : ',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54
+                ),
+              ),
+              SizedBox(height: 20,),
+              Text('Dislike : ',
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  ),
+              ),
+              SizedBox(height: 20,),
               RaisedButton(
                 onPressed: () {
                   signOutGoogle();

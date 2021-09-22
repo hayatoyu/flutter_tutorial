@@ -5,15 +5,15 @@ import 'package:google_sign_in/google_sign_in.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
-String name;
-String email;
-String imageUrl;
+String name = "";
+String email = "";
+String imageUrl = "";
 
 Future<String> signInWithGoogle() async {
   await Firebase.initializeApp();
 
-  final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-  final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+  final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+  final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount!.authentication;
 
   final AuthCredential credential = GoogleAuthProvider.credential(
     accessToken: googleSignInAuthentication.accessToken,
@@ -21,13 +21,13 @@ Future<String> signInWithGoogle() async {
   );
 
   final UserCredential authResult = await _auth.signInWithCredential(credential);
-  final User user = authResult.user;
+  final User user = authResult.user!;
 
   if (user != null) {
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
 
-    final User currentUser = _auth.currentUser;
+    final User currentUser = _auth.currentUser!;
     assert(user.uid == currentUser.uid);
 
     print('signInWithGoogle succeeded: $user');
@@ -35,9 +35,9 @@ Future<String> signInWithGoogle() async {
     assert(user.displayName != null);
     assert(user.photoURL != null);
 
-    name = user.displayName;
-    email = user.email;
-    imageUrl = user.photoURL;
+    name = user.displayName!;
+    email = user.email!;
+    imageUrl = user.photoURL!;
     if(name.contains(" ")) {
       name = name.substring(0,name.indexOf(" "));
     }
@@ -45,7 +45,7 @@ Future<String> signInWithGoogle() async {
     return '$user';
   }
 
-  return null;
+  return "";
 }
 void signOutGoogle() async{
   await googleSignIn.signOut();

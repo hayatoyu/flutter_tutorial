@@ -20,15 +20,15 @@ class Activity {
 }
 
 class Leisure {
-  int id;
-  int activityId;
-  String leisureName;
-  String description;
-  String founder;
-  DateTime startTime,endTime;
-  int ageRestiction;
-  String remark;
+  int id = 0;
+  int activityId = 0;
+  String? leisureName;
+  String? description;
+  String? founder;
+  DateTime? startTime,endTime;
+  int ageRestiction = -1;
+  String? remark;
   
-  List<Equipment> requiredEquipment;
-  List<String> participants;
+  List<Equipment>? requiredEquipment;
+  List<String>? participants;
 }
