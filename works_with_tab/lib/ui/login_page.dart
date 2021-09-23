@@ -27,7 +27,8 @@ class LoggedScreen extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              FirstScreen(),
+              //FirstScreen(),
+              ProfilePage(),
               Text('Coming Soon 2'),
               CellCalendar(
                 daysOfTheWeekBuilder: (dayIndex) {
@@ -146,6 +147,109 @@ class FirstScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({ Key? key }) : super(key: key);
+
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return
+    SingleChildScrollView(
+      child: Form(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CircleAvatar(
+              backgroundImage: NetworkImage(
+                    imageUrl,
+                  ),
+                  radius: 30,
+                  backgroundColor: Colors.transparent,
+            ),
+            SizedBox(height: 20,),
+            Text(
+              'NAME',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54
+                ),
+            ),
+            SizedBox(height: 10,),
+            Text(
+              name,
+              style: TextStyle(
+                color: Colors.black54,
+                fontSize: 10,
+                fontWeight: FontWeight.bold
+                ),
+            ),
+            SizedBox(height: 10,),
+            Text(
+              'EMAIL',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 10,
+                color: Colors.black54
+                ),
+              ),
+            SizedBox(height: 10,),
+            Text(
+              email,
+              style: TextStyle(
+                color: Colors.black54,
+                fontSize: 10,
+                fontWeight: FontWeight.bold
+                ),
+            ),
+            SizedBox(height: 20,),
+            Text(
+              'Like : ',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+                color: Colors.black54),
+            ),
+            TextFormField(
+              maxLines: 3,
+              decoration: const InputDecoration(
+                hintText: 'Enter anything you like'
+              ),
+            ),
+            SizedBox(height: 10,),
+            Text(
+              'Dislike : ',
+              style: TextStyle(color: Colors.black54,fontSize: 15,fontWeight: FontWeight.bold),
+              ),
+            TextFormField(
+              maxLines: 3,
+              decoration: const InputDecoration(
+                hintText: 'Enter anything you don''t like'
+              ),
+            ),
+            SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: ElevatedButton(
+                onPressed: () {},
+                child: const Text('Submit'),
+              ),
+            )
+          ],
+        )
+      )
+    );
+    
   }
 }
 
