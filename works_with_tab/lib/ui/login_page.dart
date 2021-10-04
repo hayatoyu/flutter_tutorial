@@ -1,5 +1,9 @@
+
 import 'package:cell_calendar/cell_calendar.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:works_with_tab/database.dart';
+import 'package:works_with_tab/model/profile.dart';
 import 'package:works_with_tab/ui/signin.dart';
 
 
@@ -53,7 +57,7 @@ class LoggedScreen extends StatelessWidget {
     );
   }
 }
-
+/*
 class FirstScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -149,6 +153,7 @@ class FirstScreen extends StatelessWidget {
     );
   }
 }
+*/
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({ Key? key }) : super(key: key);
@@ -160,6 +165,14 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  var profile = new Profile("", "", "");
+  TextEditingController likeController = new TextEditingController();
+  TextEditingController dislikeController = new TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -220,9 +233,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 fontSize: 15,
                 color: Colors.black54),
             ),
-            TextFormField(
+            TextField(
+              controller: likeController,
               maxLines: 3,
-              decoration: const InputDecoration(
+              decoration: new InputDecoration(
                 hintText: 'Enter anything you like'
               ),
             ),
@@ -232,8 +246,9 @@ class _ProfilePageState extends State<ProfilePage> {
               style: TextStyle(color: Colors.black54,fontSize: 15,fontWeight: FontWeight.bold),
               ),
             TextFormField(
+              controller: dislikeController,
               maxLines: 3,
-              decoration: const InputDecoration(
+              decoration: new InputDecoration(
                 hintText: 'Enter anything you don''t like'
               ),
             ),
@@ -241,7 +256,13 @@ class _ProfilePageState extends State<ProfilePage> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  //profile = new Profile(userId, likeController.text, dislikeController.text);
+                  profile.setLikes(likeController.text);
+                  profile.setDisLikes(dislikeController.text);
+                  saveProfile(profile);
+                  getCurrentProfile(userId);
+                },
                 child: const Text('Submit'),
               ),
             )
@@ -251,6 +272,27 @@ class _ProfilePageState extends State<ProfilePage> {
     );
     
   }
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentProfile(userId);
+  }
+
+  void getCurrentProfile(String userId) {
+    selectProfile(userId).then((value) => {
+      this.setState(() {
+        if(value != null) {
+          this.profile = new Profile(value.userId, value.likes, value.dislikes);
+          this.profile.setId(value.getId()!);
+          likeController.text = profile.likes ?? "";
+          dislikeController.text = profile.dislikes ?? "";
+        }
+      })
+    });
+  }
+
+
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -297,7 +339,7 @@ class _LoginPageState extends State<LoginPage> {
       style: outlineButtonStyle,
       onPressed: () {
         signInWithGoogle().then((result) {
-          if (result != null) {
+          if (result != null && !result.isEmpty) {
             Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
