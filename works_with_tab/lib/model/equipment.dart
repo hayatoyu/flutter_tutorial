@@ -1,7 +1,8 @@
+import 'package:firebase_database/firebase_database.dart';
+
 abstract class Equipment {
-  int? id;
-  String? name;
-  List<BorrowRecord>? borrowRecords;
+  late String name;
+  late List<BorrowRecord> borrowRecords;
 
   bool getAvailable(DateTime startTime,DateTime endTime) {
     return false;
@@ -9,10 +10,9 @@ abstract class Equipment {
 }
 
 class BorrowRecord {
-  int? id;
-  DateTime? startTime,endTime;
-  String? bookedPerson;
-  int? leisureId;
+  
+  late DateTime startTime,endTime;
+  late String bookedPerson;
   
   BorrowRecord(this.startTime,this.endTime);
 }
