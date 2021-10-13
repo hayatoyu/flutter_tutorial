@@ -12,7 +12,7 @@ class ActivitiesPage extends StatefulWidget {
 class _ActivitiesPageState extends State<ActivitiesPage> {
   @override
   Widget build(BuildContext context) {
-    return ActivitiesList(<Activity>[]);
+    return ActivitiesList();
   }
 }
 

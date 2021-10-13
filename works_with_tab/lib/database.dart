@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:works_with_tab/model/profile.dart';
+import 'package:works_with_tab/model/activity.dart';
 
 final db = FirebaseDatabase.instance.reference();
 
@@ -35,4 +36,26 @@ Future<Profile?> selectProfile(String userId) async {
     }
   }
   return profile;
+}
+
+Future<List<Activity>> selectActivities(String userId) async {
+  var activities = await db.child('activities/').once();
+  List<Activity> acts = [];
+  List<Activity> results = [];
+  if(activities.value != null) {
+    acts = createActivity(activities);
+  }
+  for(var act in acts) {
+    if(act.creatorId == userId) {
+      results.add(act);
+      break;
+    }
+    for(var leisure in act.leisureEvents) {
+      if(leisure.participants.contains(userId)) {
+        results.add(act);
+        break;
+      }
+    }
+  }
+  return results;
 }
