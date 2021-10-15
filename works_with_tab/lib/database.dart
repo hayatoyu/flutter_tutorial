@@ -15,9 +15,21 @@ DatabaseReference saveProfile(Profile profile) {
   }
 }
 
+DatabaseReference saveActivity(Activity act) {
+  if(act.Id != null) {
+    act.update();
+    return act.Id!;
+  } else {
+    var id = db.child('activity/').push();
+    id.set(act.toJson());
+    return id;
+  }
+}
+
 void updateProfile(Profile profile,DatabaseReference id) {
   id.update(profile.toJson());
 }
+
 
 Future<Profile?> selectProfile(String userId) async {
   //var userData = await db.child('profile/').equalTo(userId).once();
@@ -38,8 +50,8 @@ Future<Profile?> selectProfile(String userId) async {
   return profile;
 }
 
-Future<List<Activity>> selectActivities(String userId) async {
-  var activities = await db.child('activities/').once();
+Future<List<Activity>?> selectActivities(String userId) async {
+  var activities = await db.child('activity/').once();
   List<Activity> acts = [];
   List<Activity> results = [];
   if(activities.value != null) {
@@ -48,7 +60,7 @@ Future<List<Activity>> selectActivities(String userId) async {
   for(var act in acts) {
     if(act.creatorId == userId) {
       results.add(act);
-      break;
+      continue;
     }
     for(var leisure in act.leisureEvents) {
       if(leisure.participants.contains(userId)) {

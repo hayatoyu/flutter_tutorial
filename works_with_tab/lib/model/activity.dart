@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:works_with_tab/model/equipment.dart';
@@ -5,9 +7,9 @@ import 'package:works_with_tab/ui/signin.dart';
 import 'package:works_with_tab/database.dart';
 
 class Activity {
-  late DatabaseReference Id;
+  DatabaseReference? Id;
   late String creatorId;
-  late List<Leisure> leisureEvents;
+  List<Leisure> leisureEvents = [];
   late String title;
   bool canRaiseLeisure = false;
 
@@ -45,7 +47,23 @@ class Activity {
     }
     this.leisureEvents.add(leisure);
   }
+
+  void update() {
+    this.Id!.update(toJson());
+  }
+
+  Map<String,dynamic> toJson() {
+    var map = {
+      'creatorId' : this.creatorId,
+      'title' : this.title,
+      'canRaiseLeisure' : this.canRaiseLeisure,
+      'leisureEvents' : jsonEncode(leisureEvents)
+    };
+    return map;
+  }
 }
+
+
 
 class Leisure {
   late DatabaseReference activityId;
