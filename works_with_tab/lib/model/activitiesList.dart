@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:works_with_tab/database.dart';
 import 'package:works_with_tab/ui/signin.dart';
@@ -5,14 +6,17 @@ import 'activity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ActivitiesList extends StatefulWidget {
-  List<Activity> list = [];
-
+  final List<Activity> list = [];
+  
   @override
   _ActivitiesListState createState() => _ActivitiesListState();
+
 }
 
 class _ActivitiesListState extends State<ActivitiesList> {
   TextEditingController actNameController = new TextEditingController();
+  bool isPublic = false;
+  bool canRaise = false;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +64,25 @@ class _ActivitiesListState extends State<ActivitiesList> {
             controller: actNameController,
             decoration: new InputDecoration(hintText: "Enter Activity Name"),
           ),
+          ListTile(
+            title: const Text('Is the Activity public?'),
+            trailing: CupertinoSwitch(
+              value: isPublic,
+              onChanged: (bool value) {setState(() {
+                isPublic = value;
+              });},
+            ),
+          ),
+          ListTile(
+            title: const Text('Can participants raise an event?'),
+            trailing: CupertinoSwitch(
+              value: canRaise,
+              onChanged: (bool value) {
+                setState(() {
+                  canRaise = value;
+                });
+              },),
+          )
         ],
       ),
       actions: [
@@ -67,6 +90,8 @@ class _ActivitiesListState extends State<ActivitiesList> {
             onPressed: () {
               var act = new Activity(userId, actNameController.text);
               act.setId(saveActivity(act));
+              act.setIsPublic(isPublic);
+              act.setCanRaise(canRaise);
               // should callback to ListView to renew the List
               getActivities(userId);
               // close window
@@ -84,7 +109,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
   }
 
   void getActivities(String userId) {
-    this.widget.list = [];
+    this.widget.list.clear();
     selectActivities(userId).then((value) => {
       this.setState(() {
         if(value != null) {

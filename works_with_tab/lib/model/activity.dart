@@ -11,6 +11,7 @@ class Activity {
   late String creatorId;
   List<Leisure> leisureEvents = [];
   late String title;
+  bool isPublic = false;
   bool canRaiseLeisure = false;
 
   Activity(String creatorId,String title) {
@@ -30,8 +31,12 @@ class Activity {
     this.title = title;
   }
 
-  void setCanRaise() {
-    this.canRaiseLeisure = !this.canRaiseLeisure;
+  void setIsPublic(bool value) {
+    this.isPublic = value;
+  }
+
+  void setCanRaise(bool value) {
+    this.canRaiseLeisure = value;
   }
 
   void setLeisureEvents(List<Leisure> leisures) {
@@ -56,6 +61,7 @@ class Activity {
     var map = {
       'creatorId' : this.creatorId,
       'title' : this.title,
+      'isPublic' : this.isPublic,
       'canRaiseLeisure' : this.canRaiseLeisure,
       'leisureEvents' : jsonEncode(leisureEvents)
     };
@@ -66,7 +72,6 @@ class Activity {
 
 
 class Leisure {
-  late DatabaseReference activityId;
   late String leisureName;
   late String description;
   late String founder;
