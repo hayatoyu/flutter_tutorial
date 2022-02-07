@@ -4,13 +4,75 @@ import 'package:flutter/material.dart';
 import 'package:works_with_tab/ui/activities_page.dart';
 import 'package:works_with_tab/ui/profile_page.dart';
 import 'package:works_with_tab/ui/signin.dart';
+import 'package:works_with_tab/main.dart';
 
+final GlobalKey<NavigatorState> _navkey = GlobalKey<NavigatorState>();
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
+class LoggedScreen extends StatefulWidget {
+  const LoggedScreen({ Key? key }) : super(key: key);
+
+  @override
+  _LoggedScreenState createState() => _LoggedScreenState();
+}
+
+class _LoggedScreenState extends State<LoggedScreen> with SingleTickerProviderStateMixin {
+
+  late final TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 3,vsync: this);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Demo"),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: [
+            Tab(text: "Profile",),
+            Tab(text: "Activities",),
+            Tab(text: "Calendar",)
+          ],
+        ),
+      ),
+      body: Navigator(
+        key: _navkey,
+        onGenerateRoute: (_) => MaterialPageRoute(
+          builder: (_) => TabBarView(
+            controller: _tabController,
+            children: [
+              ProfilePage(),
+              ActivitiesPage(),
+              CellCalendar(
+                daysOfTheWeekBuilder: (dayIndex) {
+                  final labels = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 4.0),
+                    child: Text(
+                      labels[dayIndex],
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    )
+                  );
+                },
+              )
+            ],
+          )
+        ),
+      ),
+    );
+  }
+}
+/*
 class LoggedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -25,6 +87,7 @@ class LoggedScreen extends StatelessWidget {
                 Tab(text: 'Activities'),
                 Tab(text: 'Calendar')
               ],
+              
             ),
             title: Text('Tabs Demo'),
           ),
@@ -57,7 +120,9 @@ class LoggedScreen extends StatelessWidget {
     );
   }
 }
-/*
+*/
+
+
 class FirstScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -153,7 +218,7 @@ class FirstScreen extends StatelessWidget {
     );
   }
 }
-*/
+
 
 class _LoginPageState extends State<LoginPage> {
   @override

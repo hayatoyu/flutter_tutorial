@@ -31,7 +31,7 @@ Future<String> signInWithGoogle() async {
     final User currentUser = _auth.currentUser!;
     assert(user.uid == currentUser.uid);
 
-    print('signInWithGoogle succeeded: $user');
+    //print('signInWithGoogle succeeded: $user');
     assert(user.uid.isNotEmpty);
     assert(user.email != null);
     assert(user.displayName != null);
@@ -52,5 +52,5 @@ Future<String> signInWithGoogle() async {
 }
 void signOutGoogle() async{
   await googleSignIn.signOut();
-  print("User Signed Out");
+  //print("User Signed Out");
 }

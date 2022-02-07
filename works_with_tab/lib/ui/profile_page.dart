@@ -2,6 +2,7 @@
 import 'package:works_with_tab/database.dart';
 import 'package:works_with_tab/model/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:works_with_tab/model/profile_mysql.dart';
 
 import 'signin.dart';
 
@@ -15,7 +16,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-  var profile = new Profile("", "", "");
+  var profile = new Profile_MySQL("", "", "");
+  //var profile = new Profile_MySQL("", "", "");
   TextEditingController likeController = new TextEditingController();
   TextEditingController dislikeController = new TextEditingController();
 
@@ -106,12 +108,15 @@ class _ProfilePageState extends State<ProfilePage> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: ElevatedButton(
-                onPressed: () {
-                  //profile = new Profile(userId, likeController.text, dislikeController.text);
-                  profile.setLikes(likeController.text);
-                  profile.setDisLikes(dislikeController.text);
-                  saveProfile(profile);
-                  getCurrentProfile(userId);
+                onPressed: () async {
+                  //profile = new Profile_MySQL(userId, likeController.text, dislikeController.text);
+                  profile.setUserId(userId);
+                  profile.setLike(likeController.text);
+                  profile.setDislike(dislikeController.text);
+                  profile = await profile.SaveProfile(profile);
+                  //profile.SaveProfile();
+                  //getCurrentProfile(userId);
+                  getProfile(email);
                 },
                 child: const Text('Submit'),
               ),
@@ -126,10 +131,22 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    getCurrentProfile(userId);
+    //getCurrentProfile(userId);
+    
+    //test();
   }
 
+  void test() {
+    new Profile_MySQL("", "", "").Get_All();
+  }
+
+  void getProfile(String email) {
+    new Profile_MySQL("", "", "").Select_By_Email(email);
+  }
+
+  /*
   void getCurrentProfile(String userId) {
+    
     selectProfile(userId).then((value) => {
       this.setState(() {
         if(value != null) {
@@ -140,7 +157,20 @@ class _ProfilePageState extends State<ProfilePage> {
         }
       })
     });
+    
+    /*
+    profile.Select_By_UserId(userId).then((value) => {
+      this.setState(() {
+        if(value != null) {
+          this.profile = value;
+          likeController.text = profile.like;
+          dislikeController.text = profile.dislike;
+        }
+      })
+    });
+    */
   }
+  */
 
 
 }

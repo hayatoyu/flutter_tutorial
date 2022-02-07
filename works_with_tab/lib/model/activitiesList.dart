@@ -15,8 +15,8 @@ class ActivitiesList extends StatefulWidget {
 
 class _ActivitiesListState extends State<ActivitiesList> {
   TextEditingController actNameController = new TextEditingController();
-  bool isPublic = false;
-  bool canRaise = false;
+  bool isPublic = true;
+  bool canRaise = true;
 
   @override
   Widget build(BuildContext context) {
@@ -56,34 +56,18 @@ class _ActivitiesListState extends State<ActivitiesList> {
   Widget _buildPopupDialog(BuildContext context) {
     return new AlertDialog(
       title: Text("Create New Activity"),
+      
       content: new Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           TextField(
             controller: actNameController,
             decoration: new InputDecoration(hintText: "Enter Activity Name"),
           ),
-          ListTile(
-            title: const Text('Is the Activity public?'),
-            trailing: CupertinoSwitch(
-              value: isPublic,
-              onChanged: (bool value) {setState(() {
-                isPublic = value;
-              });},
-            ),
-          ),
-          ListTile(
-            title: const Text('Can participants raise an event?'),
-            trailing: CupertinoSwitch(
-              value: canRaise,
-              onChanged: (bool value) {
-                setState(() {
-                  canRaise = value;
-                });
-              },),
-          )
+          
         ],
+        
       ),
       actions: [
         TextButton(
@@ -92,7 +76,6 @@ class _ActivitiesListState extends State<ActivitiesList> {
               act.setId(saveActivity(act));
               act.setIsPublic(isPublic);
               act.setCanRaise(canRaise);
-              // should callback to ListView to renew the List
               getActivities(userId);
               // close window
               Navigator.of(context).pop();

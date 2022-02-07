@@ -62,8 +62,7 @@ class Activity {
       'creatorId' : this.creatorId,
       'title' : this.title,
       'isPublic' : this.isPublic,
-      'canRaiseLeisure' : this.canRaiseLeisure,
-      'leisureEvents' : jsonEncode(leisureEvents)
+      'canRaiseLeisure' : this.canRaiseLeisure
     };
     return map;
   }
