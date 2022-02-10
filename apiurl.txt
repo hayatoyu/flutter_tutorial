@@ -1,0 +1,28 @@
+IP:10.0.2.2 (local)
+port:8800
+
+Profile:
+Get All (Get) - /api/AppAPI/users/query
+QueryById (Get) - /api/AppAPI/users/query/{id}
+QueryByEmail (Post) - /api/AppAPI/users/query/email
+Update (Put) - /api/AppAPI/users/update/{id} - p:{Profile}
+Insert (Post) - /api/AppAPI/users/insert - p:{Profile}
+Delete (Delete) - /api/AppAPI/users/del/{id}
+
+Activity:
+Get All (Get) - /api/AppAPI/activity/query
+QueryById (Get) - /api/AppAPI/activity/query/{id}
+QueryByCreatorId (Post) - /api/AppAPI/activity/query/{creatorId}
+GetPublicActivity (Get) - /api/AppAPI/query/public
+Update (Put) - /api/AppAPI/activity/update/{id} - act:{Activity}
+Insert (Post) - /api/AppAPI/activity/insert - act:{Activity}
+Delete (Delete) - /api/AppAPI/activity/del/{id}
+
+Leisure:
+Get All (Get) - /api/AppAPI/leisure/query
+QueryByActId (Get) - /api/AppAPI/leisure/query/{id}
+QueryByTime (Post) - /api/AppAPI/leisure/query/time - startTime:{DateTime},endTime:{DateTime}
+GetPublicLeisure (Get) - /api/AppAPI/leisure/query/public/{actid}
+Update (Put) - /api/AppAPI/leisure/update/{id} - leisure:{Leisure}
+Insert (Post) - /api/AppAPI/leisure/insert - leisure:{Leisure}
+Delete (Delete) - /api/AppAPI/leisure/del/{id}

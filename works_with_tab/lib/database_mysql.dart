@@ -1,5 +1,6 @@
 import 'package:mysql1/mysql1.dart';
 
+/*
 MySqlConnection? conn;
 
 ConnectionSettings db_settings = new ConnectionSettings(
@@ -9,3 +10,4 @@ ConnectionSettings db_settings = new ConnectionSettings(
   password: 'coai62l3',
   db: 'test'
 );
+*/

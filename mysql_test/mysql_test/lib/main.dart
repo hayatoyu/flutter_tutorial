@@ -16,18 +16,7 @@ Future main() async {
     useSSL: false,
     maxPacketSize: 16 * 1024 * 1024
   );
-  /*
-  var conn = await MySqlConnection.connect(settings);
-  var results = await conn.query("select * from users");
-  var results2 = await conn.query("select * from users");
-  for(var row in results) {
-    print(row);
-  }
-  for(var row in results2) {
-    print(row);
-  }
-  conn.close();
-  */
+  
   People john = People("John");
   john.email = "john@gmail.com";
   People tom = People("Tom");

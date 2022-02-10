@@ -110,13 +110,15 @@ class _ProfilePageState extends State<ProfilePage> {
               child: ElevatedButton(
                 onPressed: () async {
                   //profile = new Profile_MySQL(userId, likeController.text, dislikeController.text);
+                  profile.setEmail(email);
+                  profile.setName(name);
                   profile.setUserId(userId);
                   profile.setLike(likeController.text);
                   profile.setDislike(dislikeController.text);
                   profile = await profile.SaveProfile(profile);
                   //profile.SaveProfile();
                   //getCurrentProfile(userId);
-                  getProfile(email);
+                  //getCurrentProfile(email,profile);
                 },
                 child: const Text('Submit'),
               ),
@@ -131,17 +133,29 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    //getCurrentProfile(userId);
-    
-    //test();
+    getCurrentProfile(email,profile);
   }
 
   void test() {
     new Profile_MySQL("", "", "").Get_All();
   }
 
-  void getProfile(String email) {
-    new Profile_MySQL("", "", "").Select_By_Email(email);
+  void getCurrentProfile(String email,Profile_MySQL profile) async {
+    var p = await new Profile_MySQL("", "", "").Select_By_Email(email);
+    if(p.getId() > 0) {
+      profile.setId(p.getId());
+      profile.setEmail(p.getEmail());
+      profile.setName(p.getName());
+      profile.setUserId(p.getUserId());
+      profile.setLike(p.getLike());
+      profile.setDislike(p.getDislike());
+    } else {
+      profile.setLike("");
+      profile.setDislike("");
+      profile.setName(name);
+      profile.setUserId(userId);
+      profile.setEmail(email);
+    }
   }
 
   /*
