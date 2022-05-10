@@ -475,6 +475,7 @@ class Leisure_MySQL {
         time: DateTime.now(),
         stackTrace: StackTrace.current
         );
+        return [];
     }
   }
 
