@@ -24,6 +24,16 @@ QueryById (Get) - /api/AppAPI/leisure/query/{id}
 QueryByActId (Post) - /api/AppAPI/leisure/query/{activityId}
 QueryByTime (Post) - /api/AppAPI/leisure/query/time - startTime:{DateTime},endTime:{DateTime}
 GetPublicLeisure (Get) - /api/AppAPI/leisure/query/public/{actid}
-Update (Put) - /api/AppAPI/leisure/update/{id} - leisure:{Leisure}
-Insert (Post) - /api/AppAPI/leisure/insert - leisure:{Leisure}
+Update (Put) - /api/AppAPI/leisure/update/{id} - id:{int},leisure:{Leisure} return {Leisure}
+Insert (Post) - /api/AppAPI/leisure/insert - leisure:{Leisure} return {Leisure}
 Delete (Delete) - /api/AppAPI/leisure/del/{id}
+
+Participant:
+QueryById (Get) - /api/AppAPI/participant/query/{id}
+QueryByUserId (Post) - /api/AppAPI/participant/query/userid - userid:{String}
+QueryByEmail (Post) - /api/AppAPI/participant/query/email - email:{String}
+QueryByActivityId (Get) - /api/AppAPI/participant/query/activity/{id}
+QueryByLeisureId (Get) - /api/AppAPI/participant/query/leisure/{id}
+Update (Put) - /api/AppAPI/participant/update/{id} - id:{int},p:{Participant}
+Insert (Post) - /api/AppAPI/participant/insert - p:{Participant}
+Delete (Delete) - /api/AppAPI/participant/del/{id} - id:{int}

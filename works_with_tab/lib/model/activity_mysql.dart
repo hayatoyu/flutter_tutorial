@@ -8,7 +8,7 @@ import 'package:works_with_tab/model/activity.dart';
 
 class Activity_MySQL {
   int id = 0;
-  late String creatorId,title;
+  String creatorId = "",title = "";
   List<Leisure_MySQL> leisures = [];
   bool isPublic = false, canRaiseLeisure = false;
 
@@ -134,13 +134,7 @@ class Activity_MySQL {
   }
 
   Future<Activity_MySQL> Update(int id, Activity_MySQL activity) async {
-    Map<String,dynamic> data = {
-      "canRaiseLeisure" : activity.canRaiseLeisure,
-      "creatorId" : activity.creatorId,
-      "id" : activity.id,
-      "isPublic" : activity.isPublic,
-      "title" : activity.title
-    };
+    Map<String,dynamic> data = activity.toJson();
     var httpClient = HttpClient();
     var request = await httpClient.putUrl(
       Uri(
@@ -167,12 +161,7 @@ class Activity_MySQL {
   }
 
   Future<Activity_MySQL> Insert(Activity_MySQL act) async {
-     Map<String,dynamic> data = {
-      "canRaiseLeisure" : act.canRaiseLeisure,
-      "creatorId" : act.creatorId,
-      "isPublic" : act.isPublic,
-      "title" : act.title
-    };
+    Map<String,dynamic> data = act.toJson();
     var httpClient = HttpClient();
     var request = await httpClient.postUrl(
       Uri(
@@ -288,7 +277,7 @@ class Activity_MySQL {
 class Leisure_MySQL {
   int id = 0;
   int activityId = 0;
-  late String leisureName, founder;
+  String leisureName = "", founder = "";
   String remark = "", description = "";
   bool isPublic = false;
   int ageRestriction = -1;
@@ -479,6 +468,90 @@ class Leisure_MySQL {
     }
   }
 
+  Future<Leisure_MySQL> Update(int id,Leisure_MySQL leisure) async {
+    Map<String,dynamic> data = leisure.toJson();
+    var httpClient = HttpClient();
+    var request = await httpClient.putUrl(
+      Uri(
+        scheme: 'http',
+        host: '10.0.2.2',
+        port: 8800,
+        path: '/api/AppAPI/leisure/update/' + id.toString(),
+        queryParameters: data
+      )
+    );
+    var response = await request.close();
+    if(response.statusCode == 200) {
+      var responseBody = await response.transform(utf8.decoder).join();
+       return Activity_MySQL("", "").createLeisureFromJson(responseBody);
+    } else {
+      developer.log(
+        "Update Failed : " + response.statusCode.toString(),
+        name: "Update Failed",
+        time: DateTime.now(),
+        stackTrace: StackTrace.current
+      );
+      return leisure;
+    }
+  }
+
+  Future<Leisure_MySQL> Insert(Leisure_MySQL leisure) async {
+    Map<String,dynamic> data = leisure.toJson();
+    var httpClient = HttpClient();
+    var request = await httpClient.postUrl(
+      Uri(
+        scheme: 'http',
+        host: '10.0.2.2',
+        port: 8800,
+        path: '/api/AppAPI/leisure/insert',
+        queryParameters: data
+      )
+    );
+    var response = await request.close();
+    if(response.statusCode == 200) {
+      var responseBody = await response.transform(utf8.decoder).join();
+       return Activity_MySQL("", "").createLeisureFromJson(responseBody);
+    } else {
+      developer.log(
+        "Insert Failed : " + response.statusCode.toString(),
+        time: DateTime.now(),
+        name: "Insert Failed",
+        stackTrace: StackTrace.current
+        );
+      return leisure;
+    }
+  }
+
+  void Delete(int id) async {
+    Map<String,dynamic> data = {"id" : id};
+    var httpClient = HttpClient();
+    var request = await httpClient.deleteUrl(
+      Uri(
+        scheme: 'http',
+        host: '10.0.2.2',
+        port: 8800,
+        path: '/api/AppAPI/leisure/del/' + id.toString(),
+        queryParameters: data
+      )
+    );
+    var response = await request.close();
+    if(response.statusCode == 200) {
+      developer.log(
+        "Delete Activity where id = " + id.toString() + " successfully",
+        time: DateTime.now(),
+        name: "Delete OK",
+        stackTrace: StackTrace.current
+        );
+    } else {
+      developer.log(
+        "Delete Activity where id = " + id.toString() + " failed",
+        time: DateTime.now(),
+        name: "Deleted failed",
+        stackTrace: StackTrace.current
+        );
+    }
+  }
+  
   Map<String,dynamic> toJson() {
     return {
       "id" : this.getId(),
