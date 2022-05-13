@@ -268,7 +268,7 @@ class Activity_MySQL {
       "id" : this.getId(),
       "canRaiseLeisure" : this.getCanRaiseLeisure(),
       "creatorId" : this.getCreatorId(),
-      "title" : this.getTitle(),
+      "title" : Uri.encodeComponent(this.getTitle()),
       "isPublic" : this.getIsPublic()
     };
   }
@@ -557,13 +557,13 @@ class Leisure_MySQL {
       "id" : this.getId(),
       "activityId" : this.getActivityId(),
       "ageRestriction" : this.getAgeRestriction(),
-      "description" : this.getDescription(),
+      "description" : Uri.encodeComponent(this.getDescription()),
       "startTime" : this.getStartTime(),
       "endTime" : this.getEndTime(),
       "founder" : this.getFounder(),
       "isPublic" : this.getIsPublic(),
-      "leisureName" : this.getLeisureName(),
-      "remark" : this.getRemark()
+      "leisureName" : Uri.encodeComponent(this.getLeisureName()),
+      "remark" : Uri.encodeComponent(this.getRemark())
     };
   }
 }

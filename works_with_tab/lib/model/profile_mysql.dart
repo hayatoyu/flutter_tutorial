@@ -2,19 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:works_with_tab/apihelper.dart';
+import 'dart:developer' as developer;
 
 class Profile_MySQL {
-  int Id = 0;
+  int id = 0;
   late String userId,email,name,like,dislike;
 
   Profile_MySQL(this.userId,this.email,this.name);
 
   void setId(int id) {
-    this.Id = id;
+    this.id = id;
   }
 
   int getId() {
-    return this.Id;
+    return this.id;
   }
 
   void setUserId(String userid) {
@@ -57,102 +59,100 @@ class Profile_MySQL {
     return this.dislike;
   }
 
-  Future<Profile_MySQL> Get_All() async {
-    var httpClient = HttpClient();
-    var request = await httpClient.getUrl(
-      Uri(
-        scheme: 'http',
-        host: '10.0.2.2',
-        port: 8800,
-        path: '/api/AppAPI/users/query'
-      )
+  Future<List<Profile_MySQL>> Get_All() async {
+    Uri uri = Uri(
+      scheme: 'http',
+      host: '10.0.2.2',
+      port: 8800,
+      path: 'api/AppAPI/users/query'
     );
-    var response = await request.close();
-    if(response.statusCode == 200) {
+    var response = await RaiseRequest("get", uri);
+    if(response!.statusCode == 200) {
       var responseBody = await response.transform(utf8.decoder).join();
-      return Profile_MySQL("", "", "").createFromJson(responseBody);
+      return Profile_MySQL("", "", "").createFromJsonList(responseBody);
     } else {
-      // 提示失敗或錯誤訊息
-      return Profile_MySQL("", "", "");
+      developer.log(
+        "Query All Failed",
+        time: DateTime.now(),
+        stackTrace: StackTrace.current
+        );
+        return [];
     }
     
   }
 
   Future<Profile_MySQL> Select_By_Email(String email) async {
-    var httpClient = HttpClient();
     Map<String,dynamic> data = {
       'email' : email
     };
-    var request = await httpClient.postUrl(Uri(
+    Uri uri = Uri(
       scheme: 'http',
       host: '10.0.2.2',
       port: 8800,
       path: '/api/AppAPI/users/query/email',
       queryParameters: data
-    ));
-    var response = await request.close();
-    if(response.statusCode == 200) {
+    );
+    var response = await RaiseRequest("post", uri);
+    if(response!.statusCode == 200) {
       var responseBody = await response.transform(utf8.decoder).join();
       return Profile_MySQL("", "", "").createFromJson(responseBody);
     } else {
       // 應該要提示失敗或錯誤訊息
+      developer.log(
+        "Query Failed with email = " + email,
+        time: DateTime.now(),
+        stackTrace: StackTrace.current
+      );
       return Profile_MySQL("", email, "");
     }
   }
 
   Future<Profile_MySQL> Add_New_Profile(Profile_MySQL p) async {
-
-    var response = await http.post(
-      Uri(
+    Uri uri = Uri(
         scheme: 'http',
         host: '10.0.2.2',
         port: 8800,
         path: '/api/AppAPI/users/insert'
-      ),
-      headers: {
-        'content-type' : 'application/json',
-        'Accept' : 'application/json'
-      },
-      body: json.encode(p),
-      encoding: Encoding.getByName('utf-8')
-    );
-    
-    if(response.statusCode == 200) {
+      );
+    var response = await RaiseRequestPostObject(uri, p);
+    if(response!.statusCode == 200) {
       return Profile_MySQL("","","").createFromJson(response.body);
     } else {
       // 應該要提示失敗或錯誤訊息
+      developer.log(
+        "Insert Failed",
+        time: DateTime.now(),
+        stackTrace: StackTrace.current
+      );
       return Profile_MySQL("", "", "");
     }
   }
 
-  Future<Profile_MySQL> Update_Profile(Profile_MySQL p) async {
-    
-    var response = await http.post(
-      Uri(
+  Future<Profile_MySQL> Update_Profile(int id, Profile_MySQL p) async {
+    Uri uri = Uri(
         scheme: 'http',
         host: '10.0.2.2',
         port: 8800,
         path: 'api/AppAPI/users/update/' + p.getId().toString()
-      ),
-      headers: {
-        "Accept" : "application/json",
-        "content-type" : "application/json"
-      },
-      body: json.encode(p),
-      encoding: Encoding.getByName('utf-8')
-    );
-    if(response.statusCode == 200) {
+      );
+    var response = await RaiseRequestPostObject(uri, p);
+    if(response!.statusCode == 200) {
       return Profile_MySQL("", "", "").createFromJson(response.body);
     } else {
       // 應該要提示失敗或錯誤訊息
+      developer.log(
+        "Update Failed with id = " + id.toString(),
+        time: DateTime.now(),
+        stackTrace: StackTrace.current
+        );
       return p;
     }
   }
 
   Future<Profile_MySQL> SaveProfile(Profile_MySQL p) async {
     Profile_MySQL newP = Profile_MySQL("","","");
-    if(this.Id > 0) {
-      newP = await Update_Profile(p);
+    if(this.id > 0) {
+      newP = await Update_Profile(this.id,p);
     } else {
       newP = await Add_New_Profile(p);
     }
@@ -160,7 +160,7 @@ class Profile_MySQL {
   }
 
   void Delete_Profile(Profile_MySQL p) async {
-    
+    // It should not delete the Profile
   }
 
   Profile_MySQL createFromJson(String jsonString) {
@@ -186,9 +186,9 @@ class Profile_MySQL {
 
   Map<String,dynamic> toJson() {
     return {
-      'id' : this.getId(),
+      'id' : this.getId().toString(),
       'email' : this.getEmail(),
-      'name' : this.getName(),
+      'name' : Uri.encodeComponent(this.getName()),
       'userid' : this.getUserId(),
       'like' : this.getLike(),
       'dislike' : this.getDislike()

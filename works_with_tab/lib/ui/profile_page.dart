@@ -134,6 +134,8 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     getCurrentProfile(email,profile);
+    //likeController.text = profile.like;
+    //dislikeController.text = profile.dislike;
   }
 
   void test() {
@@ -141,7 +143,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void getCurrentProfile(String email,Profile_MySQL profile) async {
-    var p = await new Profile_MySQL("", "", "").Select_By_Email(email);
+    var p = await (Profile_MySQL("", "", "").Select_By_Email(email));
     if(p.getId() > 0) {
       profile.setId(p.getId());
       profile.setEmail(p.getEmail());
@@ -149,6 +151,8 @@ class _ProfilePageState extends State<ProfilePage> {
       profile.setUserId(p.getUserId());
       profile.setLike(p.getLike());
       profile.setDislike(p.getDislike());
+      likeController.text = profile.like;
+      dislikeController.text = profile.dislike;
     } else {
       profile.setLike("");
       profile.setDislike("");
