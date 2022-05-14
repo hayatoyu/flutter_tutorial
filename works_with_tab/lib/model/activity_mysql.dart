@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:works_with_tab/apihelper.dart';
 import 'dart:developer' as developer;
 
 import 'package:works_with_tab/model/activity.dart';
@@ -73,39 +74,44 @@ class Activity_MySQL {
   }
 
   Future<List<Activity_MySQL>> Get_All() async {
-    var httpClient = HttpClient();
-    var request = await httpClient.getUrl(
-      Uri(
+    Uri uri = Uri(
         scheme: 'http',
         host: '10.0.2.2',
         port: 8800,
         path: '/api/AppAPI/activity/query'
-      )
     );
-    var response = await request.close();
-    if(response.statusCode == 200) {
+    var response = await RaiseRequest("get", uri);
+    if(response!.statusCode == 200) {
       var responseBody = await response.transform(utf8.decoder).join();
       return Activity_MySQL("", "").createFromJsonList(responseBody);
     } else {
+      developer.log(
+        "Query All Failed with statusCode = " + response.statusCode.toString(),
+        time: DateTime.now(),
+        stackTrace: StackTrace.current
+        );
       return [];
     }
   }
 
   Future<Activity_MySQL> Select_By_Id(int id) async {
-    var httpClient = HttpClient();
-    var request = await httpClient.getUrl(
-      Uri(
-        scheme: 'http',
-        host: '10.0.2.2',
-        port: 8800,
-        path: '/api/AppAPI/activity/query/' + id.toString()
-      )
+    Uri uri = Uri(
+      scheme: 'http',
+      host: '10.0.2.2',
+      port: 8800,
+      path: '/api/AppAPI/activity/query/' + id.toString()
     );
-    var response = await request.close();
-    if(response.statusCode == 200) {
+    
+    var response = await RaiseRequest("get", uri);
+    if(response!.statusCode == 200) {
       var responseBody = await response.transform(utf8.decoder).join();
       return Activity_MySQL("", "").createFromJson(responseBody);
     } else {
+      developer.log(
+        "Query Failed with id " + id.toString() + ", statusCode = " + response.statusCode.toString(),
+        time: DateTime.now(),
+        stackTrace: StackTrace.current
+      );
       return Activity_MySQL("", "");
     }
   }
@@ -114,45 +120,41 @@ class Activity_MySQL {
     Map<String, dynamic> data = {
       "creatorId" : creatorId
     };
-    var httpClient = HttpClient();
-    var request = await httpClient.postUrl(
-      Uri(
-        scheme: 'http',
-        host: '10.0.2.2',
-        port: 8800,
-        path: '/api/AppAPI/activity/query/creatorId',
-        queryParameters: data
-      )
+    Uri uri = Uri(
+      scheme: 'http',
+      host: '10.0.2.2',
+      port: 8800,
+      path: '/api/AppAPI/activity/query/creatorId',
+      queryParameters: data
     );
-    var response = await request.close();
-    if(response.statusCode == 200) {
+    var response = await RaiseRequest("post", uri);
+    if(response!.statusCode == 200) {
       var responseBody = await response.transform(utf8.decoder).join();
       return Activity_MySQL("", "").createFromJsonList(responseBody);
     } else {
+      developer.log(
+        "Query Failed with creatorId = " + creatorId + ", statusCode = " + response.statusCode.toString(),
+        time: DateTime.now(),
+        stackTrace: StackTrace.current
+      );
       return [];
     }
   }
 
   Future<Activity_MySQL> Update(int id, Activity_MySQL activity) async {
-    Map<String,dynamic> data = activity.toJson();
-    var httpClient = HttpClient();
-    var request = await httpClient.putUrl(
-      Uri(
-        scheme: 'http',
-        host: '10.0.2.2',
-        port: 8800,
-        path: '/api/AppAPI/activity/update/' + id.toString(),
-        queryParameters: data
-      )
+    Uri uri = Uri(
+      scheme: 'http',
+      host: '10.0.2.2',
+      port: 8800,
+      path: '/api/AppAPI/activity/update/' + id.toString(),
     );
-    var response = await request.close();
-    if(response.statusCode == 200) {
-      var responseBody = await response.transform(utf8.decoder).join();
-       return Activity_MySQL("", "").createFromJson(responseBody);
+    var response = await RaiseRequestPostObject(uri, activity);
+    if(response!.statusCode == 200) {
+      return Activity_MySQL("", "").createFromJson(response.body);
     } else {
       developer.log(
-        "Update Failed : " + response.statusCode.toString(),
-        name: "Update Failed",
+        "Update Failed with id = " + id.toString() + ", statusCode = " + response.statusCode.toString(),
+        name: "Update Activity Failed",
         time: DateTime.now(),
         stackTrace: StackTrace.current
       );
@@ -161,26 +163,20 @@ class Activity_MySQL {
   }
 
   Future<Activity_MySQL> Insert(Activity_MySQL act) async {
-    Map<String,dynamic> data = act.toJson();
-    var httpClient = HttpClient();
-    var request = await httpClient.postUrl(
-      Uri(
-        scheme: 'http',
-        host: '10.0.2.2',
-        port: 8800,
-        path: '/api/AppAPI/activity/insert',
-        queryParameters: data
-      )
+    Uri uri = Uri(
+      scheme: 'http',
+      host: '10.0.2.2',
+      port: 8800,
+      path: '/api/AppAPI/activity/insert',
     );
-    var response = await request.close();
-    if(response.statusCode == 200) {
-      var responseBody = await response.transform(utf8.decoder).join();
-       return Activity_MySQL("", "").createFromJson(responseBody);
+    var response = await RaiseRequestPostObject(uri, act);
+    if(response!.statusCode == 200) {
+      return Activity_MySQL("", "").createFromJson(response.body);
     } else {
       developer.log(
         "Insert Failed : " + response.statusCode.toString(),
         time: DateTime.now(),
-        name: "Insert Failed",
+        name: "Insert Activity Failed",
         stackTrace: StackTrace.current
         );
       return act;
@@ -189,29 +185,26 @@ class Activity_MySQL {
 
   void Delete(int id) async {
     Map<String,dynamic> data = {"id" : id};
-    var httpClient = HttpClient();
-    var request = await httpClient.deleteUrl(
-      Uri(
-        scheme: 'http',
-        host: '10.0.2.2',
-        port: 8800,
-        path: '/api/AppAPI/activity/del/' + id.toString(),
-        queryParameters: data
-      )
+    Uri uri = Uri(
+      scheme: 'http',
+      host: '10.0.2.2',
+      port: 8800,
+      path: '/api/AppAPI/activity/del/' + id.toString(),
+      queryParameters: data
     );
-    var response = await request.close();
-    if(response.statusCode == 200) {
+    var response = await RaiseRequest("delete", uri);
+    if(response!.statusCode == 200) {
       developer.log(
         "Delete Activity where id = " + id.toString() + " successfully",
         time: DateTime.now(),
-        name: "Delete OK",
+        name: "Delete Activity OK",
         stackTrace: StackTrace.current
         );
     } else {
       developer.log(
-        "Delete Activity where id = " + id.toString() + " failed",
+        "Delete Activity where id = " + id.toString() + " failed with statusCode = " + response.statusCode.toString(),
         time: DateTime.now(),
-        name: "Deleted failed",
+        name: "Deleted Activity failed",
         stackTrace: StackTrace.current
         );
     }
@@ -366,20 +359,24 @@ class Leisure_MySQL {
   }
 
   Future<List<Leisure_MySQL>> Get_All() async {
-    var httpClient = HttpClient();
-    var request = await httpClient.getUrl(
-      Uri(
-        scheme: 'http',
-        host: '10.0.2.2',
-        port: 8800,
-        path: '/api/AppAPI/leisure/query'
-      )
+    Uri uri = Uri(
+      scheme: 'http',
+      host: '10.0.2.2',
+      port: 8800,
+      path: '/api/AppAPI/leisure/query'
     );
-    var response = await request.close();
-    if(response.statusCode == 200) {
+    
+    var response = await RaiseRequest("get", uri);
+    if(response!.statusCode == 200) {
       var responseBody = await response.transform(utf8.decoder).join();
       return Activity_MySQL("", "").createLeisuresFromJson(responseBody);
     } else {
+      developer.log(
+        "Query All Failed with statusCode = " + response.statusCode.toString(),
+        name: "Query All Leisure Failed",
+        time: DateTime.now(),
+        stackTrace: StackTrace.current
+        );
       return [];
     }
   }
@@ -388,24 +385,21 @@ class Leisure_MySQL {
     var data = {
       "activityId" : activityId
     };
-    var httpClient = HttpClient();
-    var request = await httpClient.postUrl(
-      Uri(
-        scheme: 'http',
-        host: '10.0.2.2',
-        port: 8800,
-        path: '/api/AppAPI/leisure/query/' + activityId.toString(),
-        queryParameters: data
-      )
+    Uri uri = Uri(
+      scheme: 'http',
+      host: '10.0.2.2',
+      port: 8800,
+      path: '/api/AppAPI/leisure/query/' + activityId.toString(),
+      queryParameters: data
     );
-    var response = await request.close();
-    if(response.statusCode == 200) {
+    var response = await RaiseRequest("post", uri);
+    if(response!.statusCode == 200) {
       var responseBody = await response.transform(utf8.decoder).join();
       return Activity_MySQL("", "").createLeisuresFromJson(responseBody);
     } else {
       developer.log(
-        "Query Failed with activityId = " + activityId.toString(),
-        name: "Query Failed",
+        "Query Failed with activityId = " + activityId.toString() + ", statusCode = " + response.statusCode.toString(),
+        name: "Query Leisure Failed",
         time: DateTime.now(),
         stackTrace: StackTrace.current
         );
@@ -414,23 +408,20 @@ class Leisure_MySQL {
   }
 
   Future<Leisure_MySQL> Select_By_Id(int id) async {
-    var httpClient = HttpClient();
-    var request = await httpClient.getUrl(
-      Uri(
-        scheme: 'http',
-        host: '10.0.2.2',
-        port: 8800,
-        path: 'api/AppAPI/leisure/query/' + id.toString()
-      )
+    Uri uri = Uri(
+      scheme: 'http',
+      host: '10.0.2.2',
+      port: 8800,
+      path: 'api/AppAPI/leisure/query/' + id.toString()
     );
-    var response = await request.close();
-    if(response.statusCode == 200) {
+    var response = await RaiseRequest("get", uri);
+    if(response!.statusCode == 200) {
       var responseBody = await response.transform(utf8.decoder).join();
       return Activity_MySQL("", "").createLeisureFromJson(responseBody);
     } else {
       developer.log(
-        "Query Failed with leisure id = " + id.toString(),
-        name: "Query Failed",
+        "Query Failed with leisure id = " + id.toString() + ", statusCode = " + response.statusCode.toString(),
+        name: "Query Leisure Failed",
         time: DateTime.now(),
         stackTrace: StackTrace.current
       );
@@ -443,24 +434,22 @@ class Leisure_MySQL {
       "startTime" : startTime,
       "endTime" : endTime
     };
-    var httpClient = HttpClient();
-    var request = await httpClient.postUrl(
-      Uri(
-        scheme: 'http',
-        host: '10.0.2.2',
-        port: 8800,
-        path: 'app/AppAPI/leisure/query/time',
-        queryParameters: data
-      )
+    Uri uri = Uri(
+      scheme: 'http',
+      host: '10.0.2.2',
+      port: 8800,
+      path: 'app/AppAPI/leisure/query/time',
+      queryParameters: data
     );
-    var response = await request.close();
-    if(response.statusCode == 200) {
+    var response = await RaiseRequest("post", uri);
+    if(response!.statusCode == 200) {
       var responseBody = await response.transform(utf8.decoder).join();
       return Activity_MySQL("", "").createLeisuresFromJson(responseBody);
     } else {
       developer.log(
-        "Query Failed with startTime = " + startTime.toString() + " and endTime = " + endTime.toString(),
-        name: "Query Failed",
+        "Query Failed with startTime = " + startTime.toString() + " and endTime = " + endTime.toString()
+        + ", statusCode = " + response.statusCode.toString(),
+        name: "Query Leisure Failed",
         time: DateTime.now(),
         stackTrace: StackTrace.current
         );
@@ -469,25 +458,19 @@ class Leisure_MySQL {
   }
 
   Future<Leisure_MySQL> Update(int id,Leisure_MySQL leisure) async {
-    Map<String,dynamic> data = leisure.toJson();
-    var httpClient = HttpClient();
-    var request = await httpClient.putUrl(
-      Uri(
-        scheme: 'http',
-        host: '10.0.2.2',
-        port: 8800,
-        path: '/api/AppAPI/leisure/update/' + id.toString(),
-        queryParameters: data
-      )
+    Uri uri = Uri(
+      scheme: 'http',
+      host: '10.0.2.2',
+      port: 8800,
+      path: '/api/AppAPI/leisure/update/' + id.toString()
     );
-    var response = await request.close();
-    if(response.statusCode == 200) {
-      var responseBody = await response.transform(utf8.decoder).join();
-       return Activity_MySQL("", "").createLeisureFromJson(responseBody);
+    var response = await RaiseRequestPostObject(uri, leisure);
+    if(response!.statusCode == 200) {
+      return Activity_MySQL("", "").createLeisureFromJson(response.body);
     } else {
       developer.log(
-        "Update Failed : " + response.statusCode.toString(),
-        name: "Update Failed",
+        "Update Failed with id = " + id.toString() + ", statusCode = " + response.statusCode.toString(),
+        name: "Update Leisure Failed",
         time: DateTime.now(),
         stackTrace: StackTrace.current
       );
@@ -496,26 +479,20 @@ class Leisure_MySQL {
   }
 
   Future<Leisure_MySQL> Insert(Leisure_MySQL leisure) async {
-    Map<String,dynamic> data = leisure.toJson();
-    var httpClient = HttpClient();
-    var request = await httpClient.postUrl(
-      Uri(
-        scheme: 'http',
-        host: '10.0.2.2',
-        port: 8800,
-        path: '/api/AppAPI/leisure/insert',
-        queryParameters: data
-      )
+    Uri uri = Uri(
+      scheme: 'http',
+      host: '10.0.2.2',
+      port: 8800,
+      path: '/api/AppAPI/leisure/insert',
     );
-    var response = await request.close();
-    if(response.statusCode == 200) {
-      var responseBody = await response.transform(utf8.decoder).join();
-       return Activity_MySQL("", "").createLeisureFromJson(responseBody);
+    var response = await RaiseRequestPostObject(uri, leisure);
+    if(response!.statusCode == 200) {
+      return Activity_MySQL("", "").createLeisureFromJson(response.body);
     } else {
       developer.log(
         "Insert Failed : " + response.statusCode.toString(),
         time: DateTime.now(),
-        name: "Insert Failed",
+        name: "Insert Leisure Failed",
         stackTrace: StackTrace.current
         );
       return leisure;
@@ -524,29 +501,27 @@ class Leisure_MySQL {
 
   void Delete(int id) async {
     Map<String,dynamic> data = {"id" : id};
-    var httpClient = HttpClient();
-    var request = await httpClient.deleteUrl(
-      Uri(
-        scheme: 'http',
-        host: '10.0.2.2',
-        port: 8800,
-        path: '/api/AppAPI/leisure/del/' + id.toString(),
-        queryParameters: data
-      )
+    Uri uri = Uri(
+      scheme: 'http',
+      host: '10.0.2.2',
+      path: '/api/AppAPI/leisure/del/' + id.toString(),
+      queryParameters: data,
+      port: 8800
     );
-    var response = await request.close();
-    if(response.statusCode == 200) {
+    
+    var response = await RaiseRequest("delete", uri);
+    if(response!.statusCode == 200) {
       developer.log(
         "Delete Activity where id = " + id.toString() + " successfully",
         time: DateTime.now(),
-        name: "Delete OK",
+        name: "Delete Leisure OK",
         stackTrace: StackTrace.current
         );
     } else {
       developer.log(
-        "Delete Activity where id = " + id.toString() + " failed",
+        "Delete Activity where id = " + id.toString() + " failed, statusCode = " + response.statusCode.toString(),
         time: DateTime.now(),
-        name: "Deleted failed",
+        name: "Deleted Leisure failed",
         stackTrace: StackTrace.current
         );
     }

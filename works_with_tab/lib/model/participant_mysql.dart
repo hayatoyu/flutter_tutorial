@@ -84,9 +84,10 @@ class Participant_MySQL {
       return Participant_MySQL().createFromJson(responseBody);
     } else {
       developer.log(
-        "Query Failed with id = " + id.toString(),
+        "Query Failed with id = " + id.toString() + ", statusCode = " + response.statusCode.toString(),
         time: DateTime.now(),
-        stackTrace: StackTrace.current
+        stackTrace: StackTrace.current,
+        name: "Query Participant Failed"
       );
       return Participant_MySQL();
     }
@@ -110,9 +111,10 @@ class Participant_MySQL {
       return Participant_MySQL().createFromJsonList(responseBody);
     } else {
       developer.log(
-        "Query Failed with userid = " + userid,
+        "Query Failed with userid = " + userid + ", statusCode = " + response.statusCode.toString(),
         time: DateTime.now(),
-        stackTrace: StackTrace.current
+        stackTrace: StackTrace.current,
+        name: "Query Participant Failed"
         );
       return [];
     }
@@ -134,9 +136,10 @@ class Participant_MySQL {
       return Participant_MySQL().createFromJsonList(responseBody);
     } else {
       developer.log(
-        "Query Failed with email = " + email,
+        "Query Failed with email = " + email + ", statusCode = " + response.statusCode.toString(),
         time: DateTime.now(),
-        stackTrace: StackTrace.current
+        stackTrace: StackTrace.current,
+        name: "Query Participant Failed"
         );
       return [];
     }
@@ -155,7 +158,7 @@ class Participant_MySQL {
       return Participant_MySQL().createFromJsonList(responseBody);
     } else {
       developer.log(
-        "Query Failed with activityId = " + actId.toString(),
+        "Query Failed with activityId = " + actId.toString() + ", statusCode = " + response.statusCode.toString(),
         time: DateTime.now(),
         stackTrace: StackTrace.current
       );
@@ -175,55 +178,52 @@ class Participant_MySQL {
       var responseBody = await response.transform(utf8.decoder).join();
       return Participant_MySQL().createFromJsonList(responseBody);
     } else {
-      developer.log("Query Failed with leisureId = " + leisureId.toString(),
+      developer.log("Query Failed with leisureId = " + leisureId.toString() + ", statusCode = " + response.statusCode.toString(),
       time: DateTime.now(),
-      stackTrace: StackTrace.current
+      stackTrace: StackTrace.current,
+      name: "Query Participant Failed"
       );
       return [];
     }
   }
 
   Future<Participant_MySQL> Update(int id, Participant_MySQL p) async {
-    var data = p.toJson();
     Uri uri = Uri(
       scheme: 'http',
       host: '10.0.2.2',
       port: 8800,
       path: '/api/AppAPI/participant/update/' + id.toString(),
-      queryParameters: data
     );
-    var response = await RaiseRequest("put", uri);
+    var response = await RaiseRequestPostObject(uri, p);
     if(response!.statusCode == 200) {
-      var responseBody = await response.transform(utf8.decoder).join();
-      return Participant_MySQL().createFromJson(responseBody);
+      return Participant_MySQL().createFromJson(response.body);
     } else {
       developer.log(
-        "Update Failed with id = " + id.toString(),
+        "Update Failed with id = " + id.toString() + ", statusCode = " + response.statusCode.toString(),
         time: DateTime.now(),
-        stackTrace: StackTrace.current
+        stackTrace: StackTrace.current,
+        name: "Update Participant Failed"
         );
       return p;
     }
   }
 
   Future<Participant_MySQL> Insert(Participant_MySQL p) async {
-    var data = p.toJson();
     Uri uri = Uri(
       scheme: 'http',
       host: '10.0.2.2',
       port: 8800,
       path: '/api/AppAPI/participant/insert',
-      queryParameters: data
     );
-    var response = await RaiseRequest("post", uri);
+    var response = await RaiseRequestPostObject(uri, p);
     if(response!.statusCode == 200) {
-      var responseBody = await response.transform(utf8.decoder).join();
-      return Participant_MySQL().createFromJson(responseBody);
+      return Participant_MySQL().createFromJson(response.body);
     } else {
       developer.log(
-        "Insert Failed",
+        "Insert Failed, statusCode = " + response.statusCode.toString(),
         time: DateTime.now(),
-        stackTrace: StackTrace.current
+        stackTrace: StackTrace.current,
+        name: "Insert Participant Failed"
       );
       return Participant_MySQL();
     }
@@ -242,13 +242,15 @@ class Participant_MySQL {
     if(response!.statusCode == 200) {
       developer.log(
         "Delete Successfully with id = " + id.toString(),
-        time: DateTime.now()
+        time: DateTime.now(),
+        name: "Delete Participant OK"
         );
     } else {
       developer.log(
         "Delete Failed with id = " + id.toString(),
         time: DateTime.now(),
-        stackTrace: StackTrace.current
+        stackTrace: StackTrace.current,
+        name: "Delete Participant Failed"
       );
     }
   }
