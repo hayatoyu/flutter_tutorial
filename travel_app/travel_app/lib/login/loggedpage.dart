@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_app/activity/activityList.dart';
 import 'package:travel_app/login/signin.dart';
 import 'package:travel_app/profile/profile.dart';
 import 'package:travel_app/profile/profile_screen.dart';
@@ -41,7 +42,12 @@ class _LoggedPageState extends State<LoggedPage> {
             ListTile(
               title: const Text('Activity'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context, 
+                  MaterialPageRoute(
+                    builder: (context) => ActivityList(profile: profile)
+                  )
+                );
               },
             ),
             ListTile(
