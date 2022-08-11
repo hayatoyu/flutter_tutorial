@@ -45,7 +45,7 @@ class _LoggedPageState extends State<LoggedPage> {
                 Navigator.push(
                   context, 
                   MaterialPageRoute(
-                    builder: (context) => ActivityList(profile: profile)
+                    builder: (context) => ActivityList(profile: profile, list: list,)
                   )
                 );
               },

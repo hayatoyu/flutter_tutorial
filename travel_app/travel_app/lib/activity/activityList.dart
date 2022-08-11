@@ -8,10 +8,10 @@ import 'package:travel_app/login/signin.dart';
 
 
 class ActivityList extends StatefulWidget {
-  ActivityList({ Key? key, required this.profile}) : super(key: key);
+  ActivityList({ Key? key, required this.profile, required this.list }) : super(key: key);
 
   late Profile profile;
-  List<Activity> list = [];
+  late List<Activity> list;
 
   @override
   State<ActivityList> createState() => _ActivityListState();

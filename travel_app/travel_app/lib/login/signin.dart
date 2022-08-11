@@ -1,4 +1,5 @@
 import 'package:travel_app/profile/profile.dart';
+import 'package:travel_app/activity/activity.dart';
 
 
 
@@ -7,6 +8,7 @@ String name = "Hayato";
 String email = "hayato.yu@spectrumleaf.com";
 String imageUrl = "";
 Profile profile = Profile(userId, email, name);
+List<Activity> list = [];
 
 /*
 PreferEvent evt1 = PreferEvent("Food", true, "Pork, Fish");
