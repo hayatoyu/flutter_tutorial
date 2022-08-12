@@ -38,7 +38,7 @@ class _ActivityListState extends State<ActivityList> {
               child: Row(
                 children: <Widget>[
                   CloseButton(
-                    color: Colors.red,
+                    color: Colors.red[300],
                     onPressed: () {
                       setState(() {
                         widget.list.removeWhere((element) => element.title == activity.title);
