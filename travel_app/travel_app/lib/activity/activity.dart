@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_app/login/signin.dart';
 import 'dart:convert';
 
 import 'package:travel_app/profile/profile.dart';
@@ -6,10 +7,13 @@ import 'package:travel_app/profile/profile.dart';
 class Activity {
   String creatorId = "", title = "";
   List<Leisure> leisureEvents = [];
+  List<Profile> participants = [];
   bool isPublic = false;
   bool canRaiseLeisure = false;
 
-  Activity(this.creatorId,this.title);
+  Activity(this.creatorId, this.title) {
+    participants.add(profile);
+  }
 
   String getCreatorId() {
     return creatorId;

@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:travel_app/activity/activityDetail.dart';
 import 'package:travel_app/profile/profile.dart';
 import 'activity.dart';
 import 'package:travel_app/login/signin.dart';
@@ -26,20 +27,34 @@ class _ActivityListState extends State<ActivityList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Activity'),
+        title: const Text('Activity'),
       ),
       body: Center(
         child: ListView.builder(
-          itemCount: this.widget.list.length,
+          itemCount: widget.list.length,
           itemBuilder: (context, index) {
-            var activity = this.widget.list[index];
+            var activity = widget.list[index];
             return Card(
               child: Row(
                 children: <Widget>[
+                  CloseButton(
+                    color: Colors.red,
+                    onPressed: () {
+                      setState(() {
+                        widget.list.removeWhere((element) => element.title == activity.title);
+                      });
+                    },
+                  ),
                   Expanded(
                     child: ListTile(
                       subtitle: Text(name),
                       title: Text(activity.title),
+                      onTap: () {
+                        Navigator.push(
+                          context, 
+                          MaterialPageRoute(builder: (context) => ActivityDetail(activity: activity))
+                        );
+                      },
                     ),
                   )
                 ],
@@ -62,14 +77,14 @@ class _ActivityListState extends State<ActivityList> {
 
   Widget _buildAddActivityDialog(BuildContext context) {
     return AlertDialog(
-      title: Text('Add New Activity'),
+      title: const Text('Add New Activity'),
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           TextField(
             controller: actNameController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Input Activity Name'
             ),
           )
@@ -86,7 +101,7 @@ class _ActivityListState extends State<ActivityList> {
             });
             Navigator.of(context).pop();
           }, 
-          child: Text("Add New Activity"))
+          child: const Text("Add New Activity"))
       ],
     );
   }
