@@ -40,7 +40,7 @@ class _LoggedPageState extends State<LoggedPage> {
               },
             ),
             ListTile(
-              title: const Text('Activity'),
+              title: const Text('My Activity'),
               onTap: () {
                 Navigator.push(
                   context, 
@@ -51,7 +51,7 @@ class _LoggedPageState extends State<LoggedPage> {
               },
             ),
             ListTile(
-              title: const Text('Calendar'),
+              title: const Text('Public Activities'),
               onTap: () {
                 Navigator.pop(context);
               },

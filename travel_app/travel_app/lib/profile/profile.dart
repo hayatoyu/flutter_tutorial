@@ -3,7 +3,7 @@ class Profile {
   Profile(this.userId,this.email,this.name);
 
   String userId = "", email = "",  name = "";
-  String food = "", animal = "";
+  String food = "", habit = "";
   //List<PreferEvent> list = [];
 
   void setId(String userId) {
@@ -38,12 +38,12 @@ class Profile {
     return food;
   }
 
-  void setAnimal(String animal) {
-    this.animal = animal;
+  void setHabit(String habit) {
+    this.habit = habit;
   }
 
   String getAnimal() {
-    return animal;
+    return habit;
   }
 
 /*

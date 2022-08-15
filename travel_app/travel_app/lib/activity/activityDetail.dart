@@ -1,5 +1,7 @@
 // ignore_for_file: file_names, must_be_immutable
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:travel_app/activity/activity.dart';
 import 'package:travel_app/leisure/leisuredetail.dart';
 
@@ -42,63 +44,98 @@ class _ActivityDetailState extends State<ActivityDetail> {
     TextEditingController titleController = TextEditingController();
     titleController.text = widget.activity.title;
     list.add(
-      const Text(
-        'Activity Name',
-        style: TextStyle(
-          color: Colors.black54,
-          fontSize: 20,
-          fontWeight: FontWeight.bold
-        ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Expanded(
+            flex: 2,
+            child: Text(
+              'Activity Name',
+              style: TextStyle(
+                color: Colors.black54,
+                fontSize: 20,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: TextField(
+              controller: titleController,
+              maxLines: 1,
+              textAlign: TextAlign.left,
+              textAlignVertical: TextAlignVertical.center,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+          )
+        ],
       )
     );
-    list.add(
-      TextField(
-        controller: titleController,
-        maxLines: 1,
-        style: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold
-        ),
-        textAlign: TextAlign.center,
-        textAlignVertical: TextAlignVertical.center
-      )
-    );
+    
     list.add(
       Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         textDirection: TextDirection.ltr,
         children: <Widget>[
-          const Text('Is Public'),
-          Switch(
-            value: widget.activity.isPublic, 
-            onChanged: (value) {
-              setState(() {
-                widget.activity.isPublic = value;
-              });
-            },
-            activeColor: Colors.green,
-            activeTrackColor: Colors.lightGreenAccent,
+          const Expanded(
+            child: Text(
+              'Is Public',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            flex: 2,
+          ),
+          Expanded(
+            flex: 2,
+            child: Switch(
+              value: widget.activity.isPublic,
+              onChanged: (value) {
+                setState(() {
+                  widget.activity.isPublic = value;
+                });
+              },
+              activeColor: Colors.green,
+              activeTrackColor: Colors.lightGreenAccent,
+            ),
           )
         ],
       )
     );
     list.add(
       Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         textDirection: TextDirection.ltr,
         children: <Widget>[
-          const Text('Other People Can Raise Events'),
-          Switch(
-            value: widget.activity.canRaiseLeisure, 
-            onChanged: (value) {
-              setState(() {
-                widget.activity.canRaiseLeisure = value;
-              });
-            },
-            activeColor: Colors.green,
-            activeTrackColor: Colors.lightGreenAccent,
+          const Expanded(
+            child: Text(
+              'Participants Can Raise Events',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            flex: 2,
+          ),
+          Expanded(
+            child: Switch(
+              value: widget.activity.canRaiseLeisure, 
+              onChanged: (value) {
+                setState(() {
+                  widget.activity.canRaiseLeisure = value;
+                });
+              },
+              activeColor: Colors.green,
+              activeTrackColor: Colors.lightGreenAccent,
+            ),
+            flex: 2,
           )
         ],
       )
