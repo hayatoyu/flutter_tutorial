@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:travel_app/activity/activity.dart';
 import 'package:travel_app/leisure/leisuredetail.dart';
+import 'package:travel_app/login/signin.dart';
 
 
 class ActivityDetail extends StatefulWidget {
@@ -16,6 +17,9 @@ class ActivityDetail extends StatefulWidget {
 }
 
 class _ActivityDetailState extends State<ActivityDetail> {
+
+  TextEditingController eventController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,15 +34,55 @@ class _ActivityDetailState extends State<ActivityDetail> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        tooltip: 'Add New Leisure',
+        tooltip: 'Add New Event',
         child: const Icon(Icons.add),
         onPressed: () {
-          
+          showDialog(
+            context: context, 
+            builder: (BuildContext context) => _buildAddLeisureDialog(context)
+          );
         },
       ),
     );
   }
 
+  Widget _buildAddLeisureDialog(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Add New Event'),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          TextField(
+            controller: eventController,
+            decoration: const InputDecoration(
+              hintText: 'Input Event Name',
+              hintStyle: TextStyle(
+                fontSize: 14,
+                color: Colors.black26
+              )
+            ),
+          )
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            var leisure = Leisure(eventController.text, profile.userId);
+            leisure.isPublic = true;
+            leisure.participants.add(profile);
+            setState(() {
+              widget.activity.leisureEvents.add(leisure);
+            });
+            Navigator.of(context).pop();
+          }, 
+          child: const Text(
+            'Add New Event'
+          )
+        )
+      ],
+    );
+  }
   List<Widget> getActAttribute() {
     List<Widget> list = [];
     TextEditingController titleController = TextEditingController();
@@ -154,6 +198,14 @@ class _ActivityDetailState extends State<ActivityDetail> {
           Card(
             child: Row(
               children: <Widget>[
+                CloseButton(
+                  color: Colors.red[300],
+                  onPressed: () {
+                    setState(() {
+                      widget.activity.leisureEvents.removeWhere((l) => l.leisureName == element.leisureName);
+                    });
+                  },
+                ),
                 Expanded(
                   child: ListTile(
                     subtitle: Text('Founder : ' + element.founder),
