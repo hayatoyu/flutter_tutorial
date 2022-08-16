@@ -164,7 +164,7 @@ class _LeisureDetailState extends State<LeisureDetail> {
             flex: 2,
             child: TextField(
               controller: remarkController,
-              maxLines: 3,
+              maxLines: 2,
               textAlign: TextAlign.left,
               textAlignVertical: TextAlignVertical.center,
               style: const TextStyle(
@@ -274,6 +274,69 @@ class _LeisureDetailState extends State<LeisureDetail> {
       height: 20,
     ));
     widgets.add(Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Expanded(
+            flex: 2,
+            child: Text(
+              'End Time',
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54),
+            )),
+        Expanded(
+            flex: 2,
+            child: DatePickItem(
+              children: <Widget>[
+                CupertinoButton(
+                    child: Text(
+                      //'${widget.leisure.startTime.year}/${widget.leisure.startTime.month}/${widget.leisure.startTime.day} ${widget.leisure.startTime.hour}:${widget.leisure.startTime.minute}',
+                      DateFormat('yyyy-MM-dd HH:mm').format(widget.leisure.endTime),
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    onPressed: () => _showPicker(CupertinoDatePicker(
+                          initialDateTime: DateTime.now(),
+                          use24hFormat: true,
+                          onDateTimeChanged: (DateTime newDateTime) {
+                            setState(() {
+                              widget.leisure.endTime = newDateTime;
+                            });
+                          },
+                        )))
+              ],
+            )),
+      ],
+    ));
+    widgets.add(const SizedBox(
+      height: 20,
+    ));
+    widgets.add(
+      Padding(
+        padding: const EdgeInsets.only(right: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            CupertinoButton.filled(
+              child: const Text('Save'), 
+              onPressed: () {
+                setState(() {
+                  widget.leisure.leisureName = nameController.text;
+                  widget.leisure.description = desController.text;
+                  widget.leisure.ageRestriction = ageController.text as int;
+                  widget.leisure.remark = remarkController.text;
+                });
+              }
+              )
+          ],
+        ),
+      )
+    );
+    /*
+    widgets.add(
+      Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -287,6 +350,8 @@ class _LeisureDetailState extends State<LeisureDetail> {
             })
       ],
     ));
+    */
+    widgets.add(const SizedBox(height: 20,));
     return widgets;
   }
 }
