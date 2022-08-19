@@ -215,7 +215,7 @@ class _LeisureDetailState extends State<LeisureDetail> {
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black26),
+                  color: Colors.black54),
             )),
         Expanded(
             flex: 2,
