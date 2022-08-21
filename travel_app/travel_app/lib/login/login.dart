@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:travel_app/profile/profile.dart';
 import 'loggedpage.dart';
+import 'signin.dart';
 
 
 class Login extends StatefulWidget {
@@ -46,20 +49,31 @@ class _LoginState extends State<Login> {
             width: 1
           );
         }
-        return BorderSide();
+        return const BorderSide();
       })
     );
     return OutlinedButton(
       style: outlineButtonStyle,
-      onPressed: () {
+      onPressed: () async {
+        /*
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context){
               return LoggedPage();
             })
         );
+        */
+        GoogleSignInAccount? _currentUser = await _googleSignIn.signIn();
+        
       }, 
       child: Text('Sign in with Google'),
       );
   }
 }
+
+GoogleSignIn _googleSignIn = GoogleSignIn(
+  scopes: <String>[
+    'email',
+    'https://www.googleapis.com/auth/contacts.readonly',
+  ] 
+);
