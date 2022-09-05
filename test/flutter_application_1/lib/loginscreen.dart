@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/google_contact_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,13 +15,15 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late GoogleSignIn _googleSignIn;
   late GoogleSignInAccount _currentUser;
+
+  
   GoogleContacts? contacts;
   bool IsLoading = false;
 
   Future getUserContact() async {
     const host = "people.googleapis.com";
     const endPoint =
-        "/v1/people/me/connections?personFields=names,emailAddresses";
+        "/v1/people/me/connections";
     final header = await _currentUser.authHeaders;
 
     setState(() {
@@ -31,10 +35,10 @@ class _LoginScreenState extends State<LoginScreen> {
         Uri(
             scheme: 'https',
             host: host,
-            path: '/v1/people/me/connections',
+            path: endPoint,
             queryParameters: {
               'personFields': 'names,emailAddresses',
-              'pageSize': '30',
+              'pageSize': '200',
               'sources': [
                 'READ_SOURCE_TYPE_PROFILE',
                 'READ_SOURCE_TYPE_CONTACT'
@@ -72,6 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       user != null ? print(_currentUser.displayName) : null;
     });
+
   }
 
   Widget LoginWidget() {
@@ -79,14 +84,13 @@ class _LoginScreenState extends State<LoginScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text(
-          "See contacts saved in your gmail",
+          "See contacts",
           style: TextStyle(fontSize: 24),
         ),
         const SizedBox(
           height: 16,
         ),
-        FloatingActionButton(
-          backgroundColor: Colors.grey[900],
+        OutlinedButton(
           onPressed: () async {
             try {
               await _googleSignIn.signIn();
@@ -94,11 +98,75 @@ class _LoginScreenState extends State<LoginScreen> {
               print(e);
             }
           },
-          child: const Text(
-            "Google Sign in",
-            style: TextStyle(color: Colors.white),
+          style: OutlinedButton.styleFrom(
+            primary: Colors.grey,
+            minimumSize: Size(88,36),
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(2))
+            )
+          ).copyWith(
+            side: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+              if(states.contains(MaterialState.pressed)) {
+                return BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 1
+                );
+              }
+              return const BorderSide();
+            })
           ),
-        )
+          autofocus: false,
+          child: const Text(
+            'Google Sign In',
+            style: TextStyle(
+              color: Colors.black
+            ),
+          ),
+        ),
+        OutlinedButton(
+          onPressed: () async {    
+            /*        
+            try {
+              
+              await FacebookAuth.instance.webInitialize(
+                appId: '1726154931056260', 
+                cookie: true, 
+                xfbml: true, 
+                version: 'v14.0'
+              );
+            } on Exception catch(e) {
+
+            }
+            */ 
+          },
+          style: OutlinedButton.styleFrom(
+            primary: Colors.grey,
+            minimumSize: Size(88,36),
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(2))
+            )
+          ).copyWith(
+            side: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+              if(states.contains(MaterialState.pressed)) {
+                return BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 1
+                );
+              }
+              return const BorderSide();
+            })
+          ),
+          autofocus: false,
+          child: const Text(
+            'Facebook Sign In',
+            style: TextStyle(
+              color: Colors.black
+            ),
+          ),
+        ),
+        
       ],
     );
   }
@@ -107,15 +175,14 @@ class _LoginScreenState extends State<LoginScreen> {
     return ListView.separated(
         itemBuilder: (context, index) {
           final currentContact = contacts!.connections[index];
-          if(currentContact.names != null) {
-            return ListTile(
-              title: Text(currentContact.names!.first.displayName),
-            );
-          } else {
-            return const ListTile(
-              title: Text("No Name"),
-            );
-          }
+          return ListTile(
+            title: currentContact.names != null
+                ? Text(currentContact.names!.first.displayName)
+                : const Text("No Name"),
+            subtitle: currentContact.emailAddresses != null
+                ? Text(currentContact.emailAddresses!.first.value)
+                : null,
+          );
         },
         separatorBuilder: (context, index) => const Divider(),
         itemCount: contacts!.connections.length);

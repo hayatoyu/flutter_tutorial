@@ -42,18 +42,21 @@ class Connection {
     required this.etag,
     this.names,
     this.phoneNumbers,
+    this.emailAddresses,
   });
 
   String resourceName;
   String etag;
   List<Name>? names;
   List<PhoneNumber>? phoneNumbers;
+  List<Email>? emailAddresses;
 
   factory Connection.fromJson(Map<String, dynamic> json) => Connection(
     resourceName: json["resourceName"],
     etag: json["etag"],
     names: json["names"] == null ? null : List<Name>.from(json["names"].map((x) => Name.fromJson(x))),
     phoneNumbers: json["phoneNumbers"] == null ? null : List<PhoneNumber>.from(json["phoneNumbers"].map((x) => PhoneNumber.fromJson(x))),
+    emailAddresses: json["emailAddresses"] == null ? null : List<Email>.from(json["emailAddresses"].map((x) => Email.fromJson(x)))
   );
 
   Map<String, dynamic> toJson() => {
@@ -85,11 +88,11 @@ class Name {
 
   factory Name.fromJson(Map<String, dynamic> json) => Name(
     metadata: Metadata.fromJson(json["metadata"]),
-    displayName: json["displayName"],
+    displayName: json["displayName"] ?? "",
     familyName: json["familyName"] ?? "",
-    givenName: json["givenName"],
-    displayNameLastFirst: json["displayNameLastFirst"],
-    unstructuredName: json["unstructuredName"],
+    givenName: json["givenName"] ?? "",
+    displayNameLastFirst: json["displayNameLastFirst"] ?? "",
+    unstructuredName: json["unstructuredName"] ?? "",
     middleName: json["middleName"] ?? "",
   );
 
@@ -114,7 +117,7 @@ class Metadata {
   Source source;
 
   factory Metadata.fromJson(Map<String, dynamic> json) => Metadata(
-    primary: json["primary"] ?? "",
+    primary: json["primary"] ?? true,
     source: Source.fromJson(json["source"]),
   );
 
@@ -204,4 +207,36 @@ class EnumValues<T> {
     reverseMap ??= map.map((k, v) => MapEntry(v, k));
     return reverseMap;
   }
+}
+
+
+class Email {
+
+  Email({
+    required this.metadata, 
+    required this.value,
+    this.type,
+    this.formattedType}
+  );
+
+  Metadata metadata;
+  String value;
+  String? type;
+  String? formattedType;
+
+  
+
+  Map<String,dynamic> toJson() => {
+    'metadata' : metadata.toJson(),
+    'value' : value,
+    'type' : type,
+    'formattedType' : formattedType
+  };
+
+  factory Email.fromJson(Map<String, dynamic> json) => Email(
+    metadata: Metadata.fromJson(json["metadata"]),
+    value: json["value"],
+    type: json["type"],
+    formattedType: json["formattedType"],
+  );  
 }
