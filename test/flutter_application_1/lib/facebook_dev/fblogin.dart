@@ -23,6 +23,7 @@ class _FBLoginState extends State<FBLogin> {
   String? _sdkVersion;
   FacebookAccessToken? _token;
   FacebookUserProfile? _profile;
+
   String? _email, _imageUrl;
 
   @override
@@ -70,8 +71,9 @@ class _FBLoginState extends State<FBLogin> {
     await widget.plugin.logIn(
       permissions: [
         FacebookPermission.publicProfile,
-        FacebookPermission.email
-      ]
+        FacebookPermission.email,
+        FacebookPermission.userFriends
+      ],      
     );
     await _updateLoginInfo();
   }
@@ -114,6 +116,7 @@ class _FBLoginState extends State<FBLogin> {
         email = await plugin.getUserEmail();
       }
       imageUrl = await plugin.getProfileImageUrl(width: 100);
+      
     }
 
     setState(() {
