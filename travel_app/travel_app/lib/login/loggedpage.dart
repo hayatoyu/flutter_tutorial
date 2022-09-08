@@ -57,6 +57,12 @@ class _LoggedPageState extends State<LoggedPage> {
               },
             ),
             ListTile(
+              title: const Text('Chat Room'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
               title: const Text('Back to Home'),
               onTap: () {
                 Navigator.pop(context);
