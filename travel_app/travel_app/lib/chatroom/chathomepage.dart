@@ -6,13 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:travel_app/allConstants/allconstants.dart';
 import 'package:travel_app/allWidgets/loadingview.dart';
+import 'package:travel_app/chatroom/chatprofilepage.dart';
 import 'package:travel_app/login/login.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_app/models/chatuser.dart';
 import 'package:travel_app/provider/authprovider.dart';
 import 'package:travel_app/chatroom/chatpage.dart';
 import 'package:travel_app/chatroom/loginpage.dart';
-import 'package:travel_app/chatroom/profilepage.dart';
+import 'package:travel_app/chatroom/chatprofilepage.dart';
 import 'package:travel_app/provider/homeprovider.dart';
 import 'package:travel_app/utilities/debouncer.dart';
 import 'package:travel_app/utilities/keyboardutils.dart';
@@ -173,7 +174,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
           IconButton(
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage()));
+                  MaterialPageRoute(builder: (context) => const ChatProfilePage()));
             },
             icon: const Icon(Icons.person),
           )
