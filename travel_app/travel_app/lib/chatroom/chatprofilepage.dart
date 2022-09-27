@@ -55,6 +55,7 @@ class _ChatProfilePageState extends State<ChatProfilePage> {
     });
     displayNameController = TextEditingController(text: displayName);
     aboutMeController = TextEditingController(text: aboutMe);
+    _phoneController.text = phoneNumber;
   }
 
   Future getImage() async {
@@ -85,7 +86,7 @@ class _ChatProfilePageState extends State<ChatProfilePage> {
         id: id, 
         photoUrl: photoUrl, 
         displayname: displayName, 
-        phoneNum: phoneNumber, 
+        phoneNumber: phoneNumber, 
         aboutMe: aboutMe
       );
       profileProvider.updateFirestoreData(
@@ -120,7 +121,7 @@ class _ChatProfilePageState extends State<ChatProfilePage> {
       id: id, 
       photoUrl: photoUrl, 
       displayname: displayName, 
-      phoneNum: phoneNumber, 
+      phoneNumber: phoneNumber, 
       aboutMe: aboutMe
     );
     profileProvider.updateFirestoreData(

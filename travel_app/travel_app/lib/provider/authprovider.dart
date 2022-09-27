@@ -85,7 +85,7 @@ class AuthProvider extends ChangeNotifier {
           await prefs.setString(FirestoreConstants.id, userChat.id);
           await prefs.setString(FirestoreConstants.displayName, userChat.displayname);
           await prefs.setString(FirestoreConstants.aboutMe, userChat.aboutMe);
-          await prefs.setString(FirestoreConstants.phoneNumber, userChat.phoneNum);
+          await prefs.setString(FirestoreConstants.phoneNumber, userChat.phoneNumber);
         }
         _status = Status.authenticated;
         notifyListeners();

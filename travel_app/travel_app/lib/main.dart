@@ -16,9 +16,19 @@ import 'utilities/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if(Firebase.apps.isNotEmpty) {
+    Firebase.app();
+  } else {
+    await Firebase.initializeApp(
+      name: 'Smart talk',
+      options: DefaultFirebaseOptions.currentPlatform
+    );
+  }
+  /*
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
+  */
   SharedPreferences prefs = await SharedPreferences.getInstance();
   runApp(MyApp(prefs: prefs));
 }

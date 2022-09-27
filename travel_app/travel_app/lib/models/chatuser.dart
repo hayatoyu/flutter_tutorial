@@ -4,36 +4,36 @@ import 'package:travel_app/allConstants/allconstants.dart';
 import 'package:equatable/equatable.dart';
 
 class ChatUser extends Equatable {
-  final String id, photoUrl, displayname, phoneNum, aboutMe;
+  final String id, photoUrl, displayname, phoneNumber, aboutMe;
 
-  const ChatUser({required this.id,required this.photoUrl,required this.displayname,required this.phoneNum,required this.aboutMe});
+  const ChatUser({required this.id,required this.photoUrl,required this.displayname,required this.phoneNumber,required this.aboutMe});
 
   ChatUser copyWith({
     String? id,
     String? photoUrl,
     String? displayname,
-    String? phoneNum,
+    String? phoneNumber,
     String? aboutMe
   }) => ChatUser(
     id: id ?? this.id, 
     photoUrl: photoUrl ?? this.photoUrl, 
     displayname: displayname ?? this.displayname, 
-    phoneNum: phoneNum ?? this.phoneNum, 
+    phoneNumber: phoneNumber ?? this.phoneNumber, 
     aboutMe: aboutMe ?? this.aboutMe);
   
   Map<String,dynamic> toJson() => {
     FirestoreConstants.displayName: displayname,
     FirestoreConstants.photoUrl: photoUrl,
-    FirestoreConstants.phoneNumber: phoneNum,
+    FirestoreConstants.phoneNumber: phoneNumber,
     FirestoreConstants.aboutMe: aboutMe
   };
 
   factory ChatUser.fromDocument(DocumentSnapshot documentSnapshot) {
-    String photoUrl = "", nickname = "", phoneNum = "", aboutMe = "";
+    String photoUrl = "", nickname = "", phoneNumber = "", aboutMe = "";
     try {
       photoUrl = documentSnapshot.get(FirestoreConstants.photoUrl);
       nickname = documentSnapshot.get(FirestoreConstants.displayName);
-      phoneNum = documentSnapshot.get(FirestoreConstants.phoneNumber);
+      phoneNumber = documentSnapshot.get(FirestoreConstants.phoneNumber);
       aboutMe = documentSnapshot.get(FirestoreConstants.aboutMe);
     } catch (e) {
       if(kDebugMode) {
@@ -44,11 +44,11 @@ class ChatUser extends Equatable {
       id: documentSnapshot.id, 
       photoUrl: photoUrl, 
       displayname: nickname, 
-      phoneNum: phoneNum, 
+      phoneNumber: phoneNumber, 
       aboutMe: aboutMe
     );
   }
 
   @override
-  List<Object?> get props => [id,photoUrl,displayname,phoneNum,aboutMe];
+  List<Object?> get props => [id,photoUrl,displayname,phoneNumber,aboutMe];
 }
