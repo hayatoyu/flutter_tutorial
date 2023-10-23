@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fully_holiday/citypage.dart';
+import 'searchpage.dart';
 
 class Post {
   int id = 0;
@@ -158,7 +160,10 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   FloatingActionButton.large(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => CityPage()));
+                    },
+                    heroTag: "CityBtn",
                     backgroundColor: Colors.amber[100],
                     shape: const BeveledRectangleBorder(
                         borderRadius: BorderRadius.zero),
@@ -169,7 +174,11 @@ class _HomePageState extends State<HomePage> {
                     width: 15,
                   ),
                   FloatingActionButton.large(
-                    onPressed: () {},
+                    onPressed: () {
+                      //Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage()));
+                    },
+                    heroTag: "SearchBtn",
                     backgroundColor: Colors.amber[100],
                     shape: const BeveledRectangleBorder(
                         borderRadius: BorderRadius.zero),
@@ -180,6 +189,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   FloatingActionButton.large(
                     onPressed: () {},
+                    heroTag: "ShopBtn",
                     backgroundColor: Colors.amber[100],
                     shape: const BeveledRectangleBorder(
                         borderRadius: BorderRadius.zero),
@@ -195,6 +205,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   FloatingActionButton.large(
                     onPressed: () {},
+                    heroTag: "TaxiBtn",
                     backgroundColor: Colors.amber[100],
                     shape: const BeveledRectangleBorder(
                         borderRadius: BorderRadius.zero),
@@ -205,6 +216,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   FloatingActionButton.large(
                     onPressed: () {},
+                    heroTag: "HotelBtn",
                     backgroundColor: Colors.amber[100],
                     shape: const BeveledRectangleBorder(
                         borderRadius: BorderRadius.zero),
@@ -215,6 +227,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   FloatingActionButton.large(
                     onPressed: () {},
+                    heroTag: "WifiBtn",
                     backgroundColor: Colors.amber[100],
                     shape: const BeveledRectangleBorder(
                         borderRadius: BorderRadius.zero),

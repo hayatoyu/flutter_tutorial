@@ -194,12 +194,12 @@ class FirstScreen extends StatelessWidget {
                   ),
               ),
               SizedBox(height: 20,),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
                   signOutGoogle();
                   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) {return LoginPage();}), ModalRoute.withName('/'));
                 },
-                color: Colors.deepPurple,
+                //color: Colors.deepPurple,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
@@ -207,9 +207,11 @@ class FirstScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 25, color: Colors.white),
                   ),
                 ),
-                elevation: 5,
+                //elevation: 5,
+                /*
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
+                */
               )
             ],
           ),
